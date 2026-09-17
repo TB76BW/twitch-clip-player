@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>CtCotC Twitch Clip Player</title>
+
+    <style>
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+
+            width: 100%;
+            height: 100%;
+
+            overflow: hidden;
+
+            background: #000;
+        }
+
+
+        #clipPlayer {
+            position: absolute;
+
+            left: 0;
+            top: 0;
+
+            width: 100%;
+            height: 100%;
+
+            border: 0;
+
+            background: #000;
+        }
+
+
+        #error {
+            display: none;
+
+            position: absolute;
+            inset: 0;
+
+            align-items: center;
+            justify-content: center;
+
+            background: #000;
+
+            color: white;
+
+            font-family:
+                Arial,
+                sans-serif;
+
+            font-size: 24px;
+
+            text-align: center;
+        }
+    </style>
+</head>
+
+
+<body>
+
+    <iframe
+        id="clipPlayer"
+
+        allow="autoplay; fullscreen"
+
+        allowfullscreen
+
+        scrolling="no"
+
+        frameborder="0"
+
+        preload="auto"
+    ></iframe>
+
+
+    <div id="error">
+        Twitch Clip konnte nicht geladen werden.
+    </div>
+
+
+    <script>
+
+        // =====================================================
+        // URL PARAMETER
+        //
+        // Beispiel:
+        //
+        // ?clip=RelievedMistyBisonPanicBasket--C8ABNgQ-gGJvB7k
+        // =====================================================
+
+        const params =
+            new URLSearchParams(
+                window.location.search
+            );
+
+
+        const clipId =
+            params.get("clip");
+
+
+        const player =
+            document.getElementById(
+                "clipPlayer"
+            );
+
+
+        const error =
+            document.getElementById(
+                "error"
+            );
+
+
+        // =====================================================
+        // WICHTIG:
+        //
+        // GitHub Pages Host automatisch ermitteln.
+        //
+        // Beispiel:
+        // ctcotc.github.io
+        //
+        // Dadurch müssen wir keinen GitHub-Namen
+        // hart im HTML eintragen.
+        // =====================================================
+
+        const parentDomain =
+            window.location.hostname;
+
+
+        console.log(
+            "[CtCotC Clip Player] Host:",
+            parentDomain
+        );
+
+
+        console.log(
+            "[CtCotC Clip Player] Clip:",
+            clipId
+        );
+
+
+        if (!clipId)
+        {
+            error.style.display =
+                "flex";
+        }
+        else
+        {
+            // =================================================
+            // OFFIZIELLER TWITCH CLIP EMBED
+            // =================================================
+
+            const twitchUrl =
+                "https://clips.twitch.tv/embed"
+                +
+                "?clip="
+                +
+                encodeURIComponent(
+                    clipId
+                )
+                +
+                "&parent="
+                +
+                encodeURIComponent(
+                    parentDomain
+                )
+                +
+                "&autoplay=true"
+                +
+                "&muted=false";
+
+
+            console.log(
+                "[CtCotC Clip Player] Embed:",
+                twitchUrl
+            );
+
+
+            player.src =
+                twitchUrl;
+        }
+
+    </script>
+
+</body>
+</html>
